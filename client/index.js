@@ -1,9 +1,10 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import App from './components/App';
+import LoginForm from './components/LoginForm';
 
 // Apollo Client making requests to the GraphQL Server
 const client = new ApolloClient({
@@ -16,7 +17,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <App />
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route path="/login" element={<LoginForm />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
     </ApolloProvider>
   );
