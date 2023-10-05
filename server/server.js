@@ -8,6 +8,7 @@ const passport = require('passport');
 const passportConfig = require('./services/auth');
 const MongoStore = require('connect-mongo')(session);
 const schema = require('./schema/schema');
+const path = require('path');
 
 // Create a new Express application
 const app = express();
@@ -64,6 +65,14 @@ app.use(
     graphiql: true
   })
 );
+
+// Serve static assets if in production
+app.use(express.static(path.join(__dirname, '../build')));
+
+// The catchall handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
