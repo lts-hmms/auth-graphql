@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const GET_CURRENTUSER = gql`
+const GetCurrentUserQuery = gql`
     query GetCurrentUser {
         currentUser {
             id
@@ -9,4 +9,4 @@ const GET_CURRENTUSER = gql`
     }
 `;
 
-export default GET_CURRENTUSER;
+export default GetCurrentUserQuery;
