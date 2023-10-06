@@ -2,11 +2,11 @@ import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import GET_CURRENTUSER from "../queries/CurrentUser";
-import LOGOUT from "../mutations/Logout";
+import LogoutMutation from "../mutations/LogoutMutation";
 
 const Header = () => {
     const { loading, error, data } = useQuery(GET_CURRENTUSER);
-    const [logout] = useMutation(LOGOUT);
+    const [logout] = useMutation(LogoutMutation);
 
     const onLogout = () => {
         logout({
