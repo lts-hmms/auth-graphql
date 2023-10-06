@@ -1,16 +1,16 @@
 import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
-import GET_CURRENTUSER from "../queries/CurrentUser";
+import GetCurrentUserQuery from "../queries/CurrentUserQuery";
 import LogoutMutation from "../mutations/LogoutMutation";
 
 const Header = () => {
-    const { loading, error, data } = useQuery(GET_CURRENTUSER);
+    const { loading, error, data } = useQuery(GetCurrentUserQuery);
     const [logout] = useMutation(LogoutMutation);
 
     const onLogout = () => {
         logout({
-            refetchQueries: [{ query: GET_CURRENTUSER }]
+            refetchQueries: [{ query: GetCurrentUserQuery }]
         });
     }
 
