@@ -1,9 +1,11 @@
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-  entry: './client/index.js',
+  entry: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+  path.join(__dirname, 'client','index.js')],
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
@@ -26,7 +28,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'client/index.html'
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   optimization: {
     minimizer: [new TerserPlugin()],

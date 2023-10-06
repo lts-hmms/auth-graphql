@@ -66,20 +66,34 @@ app.use(
   })
 );
 
-// Serve static assets if in production
-app.use(express.static(path.join(__dirname, '../build')));
-
-// The catchall handler: for any request that doesn't match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
-});
-
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
 // a single bundle.js output of all of our client side Javascript
-const webpackMiddleware = require('webpack-dev-middleware');
+
 const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('../webpack.config.js');
-app.use(webpackMiddleware(webpack(webpackConfig)));
+
+const compiler = webpack(webpackConfig);
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath,
+    stats: { colors: true },
+}));
+app.use(webpackHotMiddleware(compiler));
+
+// The catchall handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (req, res, next) => {
+  const webpackOutputHtmlPath = path.join(compiler.outputPath, 'index.html');
+  compiler.outputFileSystem.readFile(webpackOutputHtmlPath, (err, result) => {
+    if (err) {
+      return next(err);
+    }
+    res.set('content-type', 'text/html');
+    res.send(result);
+    res.end();
+  });
+}
+);
 
 module.exports = app;
