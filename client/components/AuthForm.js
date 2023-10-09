@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-const AuthForm = ({ onSubmit }) => {
+const AuthForm = ({ onSubmit, errors }) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -31,6 +31,9 @@ const AuthForm = ({ onSubmit }) => {
                         onChange={e => setPassword(e.target.value)}
                     />
                 </div>
+                <div className="errors">
+                    {errors.map(error => <div key={error}>{error}</div>)}
+                </div> 
                 <button className="btn">Submit</button>
             </form>
         </div>
@@ -40,5 +43,6 @@ const AuthForm = ({ onSubmit }) => {
 export default AuthForm;
 
 AuthForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    errors: PropTypes.array.isRequired
 }
