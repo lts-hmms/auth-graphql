@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import AuthForm from "./AuthForm";
 import SignupMutation from "../mutations/SignupMutation";
@@ -9,6 +10,7 @@ const SignupForm = () => {
     const [signup] = useMutation(SignupMutation);
     const { loading, error, data } = useQuery(GetCurrentUserQuery);
     const [errors, setErrors] = useState([]);
+    const navigate = useNavigate();
 
     const onSubmit = ({ email, password }) => {
         signup({
@@ -20,6 +22,13 @@ const SignupForm = () => {
             setErrors(errors);
         });
     }
+
+    // if user is logged in, redirect to dashboard
+    useEffect(() => {
+        if (!loading && data.currentUser) {
+            navigate("/dashboard");
+        }
+    }, [loading, data]);
 
 
     return (
