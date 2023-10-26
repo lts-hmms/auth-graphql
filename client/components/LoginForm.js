@@ -17,7 +17,7 @@ const LoginForm = () => {
             navigate("/dashboard");
         }
     }, [loading, data]);
-    
+
     const onSubmit = ({ email, password }) => {
         login({
             variables: { email, password },
@@ -29,7 +29,6 @@ const LoginForm = () => {
             const errors = res.graphQLErrors.map(error => error.message);
             setErrors(errors);
         });
-
     }
 
     return (
